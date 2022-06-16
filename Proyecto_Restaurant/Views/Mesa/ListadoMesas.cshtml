@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Proyecto_Restaurant.Models.MesaModel>
+
+@{
+    ViewBag.Title = "Listado de Mesas";
+}
+
+<h2 class="text-center"><u>Listado de Mesas</u></h2>
+
+<p>
+    @Html.ActionLink("Nueva Mesa", "Create",null,new { @class="btn btn-primary"})
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.idMesa)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.descMesa)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.idMesa)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.descMesa)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.idMesa})
+            @*@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+        </td>
+    </tr>
+}
+
+</table>

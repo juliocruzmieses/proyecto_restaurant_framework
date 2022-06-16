@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Proyecto_Restaurant.Models.CategoriaModel>
+
+@{
+    ViewBag.Title = "Listado de Categorias";
+}
+
+<h2 class="text-center"><u>Listado de Categorias</u></h2>
+
+<p>
+    @Html.ActionLink("Nueva Categoria", "Create",null,new { @class="btn btn-primary"})
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.idCategoria)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.nomCategoria)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.idCategoria)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.nomCategoria)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.idCategoria})
+            @*@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+        </td>
+    </tr>
+}
+
+</table>
