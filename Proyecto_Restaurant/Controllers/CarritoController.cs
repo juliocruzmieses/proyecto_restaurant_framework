@@ -9,6 +9,7 @@ using Proyecto_Restaurant.Permisos;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Threading.Tasks;
 
 namespace Proyecto_Restaurant.Controllers
 {
@@ -41,6 +42,36 @@ namespace Proyecto_Restaurant.Controllers
                 }
             }
             return lista;
+        }
+
+        IEnumerable<MesaModel> Mesas()
+        {
+            List<MesaModel> lista = new List<MesaModel>();
+            using (SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["cadena"].ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand("usp_listarMesa", cn);
+                cn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    lista.Add(new MesaModel()
+                    {
+                        idMesa = dr[0].ToString(),
+                        descMesa = dr[1].ToString()
+                    });
+                }
+            }
+            return lista;
+        }
+
+
+        public async Task<ActionResult> IndexCarrito()
+        {
+            return View(await Task.Run(() => Mesas()));
+        }
+        public ActionResult SeleccionProductos()
+        {
+            return View();
         }
         public ActionResult AgregarCarrito()
         {

@@ -33,11 +33,23 @@ namespace Proyecto_Restaurant.Controllers
                 cmd.Parameters.AddWithValue("pass", user.pass);
 
                 cn.Open();
-                user.id_usuario = Convert.ToInt32(cmd.ExecuteScalar().ToString());
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    user.id_usuario = dr.GetInt32(0);
+                    user.nom_usuario = dr.GetString(1);
+                    user.ape_usuario = dr.GetString(2);
+                    user.username = dr.GetString(3);
+                    user.email = dr.GetString(4);
+                    user.fono_user = dr.GetString(5);
+                    user.id_distrito = dr.GetInt32(6);
+                    user.nom_distrito = dr.GetString(7);
+                }
             }
             if (user.id_usuario!=0)
             {
                 Session["usuario"] = user;
+                Session["nomuser"] = user.nom_usuario;
                 return RedirectToAction("Index","Home") ;
             }
             else

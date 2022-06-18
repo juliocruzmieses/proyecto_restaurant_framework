@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Proyecto_Restaurant.Models.MesaModel>
+    @{
+        ViewBag.Title = "Seleccionar Mesa";
+    }
+    <h2 class="text-center">@ViewBag.Title</h2>
+
+    <div class="d-flex flex-wrap">
+        @foreach (var item in Model)
+        {
+        <a href="#">
+            <div class="card text-white bg-primary m-3" style="max-width: 18rem;">
+                <div class="card-body">
+                    <h4 class="card-text text-white">@item.descMesa</h4>
+                </div>
+            </div>
+        </a>
+        }
+    </div>
+

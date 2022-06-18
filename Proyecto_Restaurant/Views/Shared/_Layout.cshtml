@@ -15,7 +15,10 @@
         <nav id="sidebar">
             <div class="p-4 pt-5">
                 <ul class="list-unstyled components mb-5">
-                    <li class="">
+                    <li>
+                        <h4 class="text-muted text-center">@HttpContext.Current.Session["nomuser"].ToString()</h4>
+                    </li>
+                    <li>
                         @Html.ActionLink("Dashboard", "Index", "Home")
                     </li>
                     <li>
@@ -29,7 +32,7 @@
                             <li>@Html.ActionLink("Mesas", "ListadoMesas", "Mesa")</li>
                         </ul>
                     </li>
-                    <li><a href="#">Pedido</a></li>
+                    <li>@Html.ActionLink("Pedido", "IndexCarrito","Carrito")</li>
                     <li><a href="#">Configuraci&oacute;n</a></li>
                     <li>@Html.ActionLink("Acerca de", "About", "Home")</li>
                     <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>

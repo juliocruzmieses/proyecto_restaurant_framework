@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Proyecto_Restaurant.Models;
 using Proyecto_Restaurant.Permisos;
 
 namespace Proyecto_Restaurant.Controllers
