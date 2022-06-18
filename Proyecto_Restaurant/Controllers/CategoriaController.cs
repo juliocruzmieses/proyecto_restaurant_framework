@@ -13,9 +13,9 @@ using System.Threading.Tasks;
 
 namespace Proyecto_Restaurant.Controllers
 {
+    [ValidarSession]
     public class CategoriaController : Controller
     {
-        [ValidarSession]
         // GET: Categoria
         IEnumerable<CategoriaModel> listaCategorias()
         {

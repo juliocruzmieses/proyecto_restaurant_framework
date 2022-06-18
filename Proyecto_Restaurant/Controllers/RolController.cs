@@ -13,9 +13,9 @@ using System.Threading.Tasks;
 
 namespace Proyecto_Restaurant.Controllers
 {
+    [ValidarSession]
     public class RolController : Controller
     {
-        [ValidarSession]
         // GET: Rol
         IEnumerable<RolModel> Roles()
         {

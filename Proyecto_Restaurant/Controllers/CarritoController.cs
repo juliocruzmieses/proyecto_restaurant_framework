@@ -13,9 +13,9 @@ using System.Threading.Tasks;
 
 namespace Proyecto_Restaurant.Controllers
 {
+    [ValidarSession]
     public class CarritoController : Controller
     {
-        [ValidarSession]
         // GET: Carrito
         IEnumerable<ProductoModel> Productos()
         {

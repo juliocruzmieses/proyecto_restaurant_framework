@@ -13,9 +13,9 @@ using System.Threading.Tasks;
 
 namespace Proyecto_Restaurant.Controllers
 {
+    [ValidarSession]
     public class DistritoController : Controller
     {
-        [ValidarSession]
         // GET: Distrito
         IEnumerable<DistritoModel> Distritos()
         {

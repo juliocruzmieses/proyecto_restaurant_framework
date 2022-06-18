@@ -13,9 +13,9 @@ using System.Threading.Tasks;
 
 namespace Proyecto_Restaurant.Controllers
 {
+    [ValidarSession]
     public class MesaController : Controller
     {
-        [ValidarSession]
         // GET: Mesa
         IEnumerable<MesaModel> listaMesas()
         {
