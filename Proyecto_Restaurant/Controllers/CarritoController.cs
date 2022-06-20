@@ -16,7 +16,29 @@ namespace Proyecto_Restaurant.Controllers
     [ValidarSession]
     public class CarritoController : Controller
     {
-        // GET: Carrito
+        IEnumerable<DetalleCarritoModel> List_Detalle(int idmesa)
+        {
+            List<DetalleCarritoModel> lista = new List<DetalleCarritoModel>();
+            using (SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["cadena"].ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand("sp_list_detalle_boleta", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@idmesa", idmesa);
+                cn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    lista.Add(new DetalleCarritoModel()
+                    {
+                        id_boleta = dr.GetString(0),
+                        id_producto = dr.GetInt32(1),
+                        cantidad = dr.GetInt32(2),
+                        total= dr.GetDecimal(3)
+                    });
+                }
+            }
+            return lista;
+        }
         IEnumerable<ProductoModel> Productos()
         {
             List<ProductoModel> lista = new List<ProductoModel>();
@@ -69,9 +91,34 @@ namespace Proyecto_Restaurant.Controllers
         {
             return View(await Task.Run(() => Mesas()));
         }
-        public ActionResult SeleccionProductos()
+        public ActionResult Valida_Pedido(int idmesa)
+        {
+            using (SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["cadena"].ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand("sp_valida_pedido_en_mesa", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@idmesa", idmesa);//definir donde colocar el id en la mesa para capturarlo
+                cn.Open();
+                int validando = Convert.ToInt32(cmd.ExecuteScalar().ToString());
+                if (validando !=0)
+                {
+                    return RedirectToAction("Resumen", "Carrito");
+                }
+                else
+                {
+                    return RedirectToAction("IndexCarrito", "Carrito");
+                }
+            }
+                
+        }
+        public ActionResult Resumen()
         {
             return View();
+        }
+        public JsonResult ResumenPedido(int idmesa)
+        {
+            List<DetalleCarritoModel>carrito = (List < DetalleCarritoModel >)List_Detalle(idmesa);
+            return Json(carrito,JsonRequestBehavior.AllowGet);
         }
         public ActionResult AgregarCarrito()
         {

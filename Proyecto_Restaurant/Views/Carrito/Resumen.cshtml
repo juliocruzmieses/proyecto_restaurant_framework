@@ -1,0 +1,95 @@
+﻿@{
+    ViewBag.Title = "Pedido";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<form action="#" method="post" class="mt-4">
+    <div class="form-row">
+        <div class="form-group col-md-3">
+            <label for="numboleta">N° de Boleta</label>
+            <input type="email" class="form-control" id="numboleta" placeholder="Email" value="BV000-000001" readonly>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="nummesa">N° de Mesa</label>
+            <select class="form-control" id="nummesa" disabled>
+                <option>Mesa 1</option>
+                <option>Mesa 2</option>
+                <option>Mesa 3</option>
+            </select>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="product">Producto</label>
+            <select id="product" class="form-control">
+                <option>arroz con pollo</option>
+                <option>ensalada rusa</option>
+                <option>gaseosa 5m</option>
+            </select>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="cant">Cantidad</label>
+            <input type="text" class="form-control" id="cant">
+        </div>
+    </div>
+    <button type="button" class="btn btn-primary" id="btnagregar">Agregar producto</button>
+    <a href="#" class="btn btn-primary">Retornar</a>
+</form>
+
+
+
+
+
+<h2 class="text-center">Resumen de Pedido</h2>
+<table class="table mt-4" id="ResumenPedido">
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Total</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>pollo</td>
+            <td>2</td>
+            <td>20</td>
+            <td><a href="#" class="btn btn-primary">edit</a></td>
+        </tr>
+        <tr>
+            <td>gaseosa</td>
+            <td>3</td>
+            <td>33</td>
+            <td><a href="#" class="btn btn-primary">edit</a></td>
+        </tr>
+        <tr>
+            <td>chaufa</td>
+            <td>2</td>
+            <td>45</td>
+            <td><a href="#" class="btn btn-primary">edit</a></td>
+        </tr>
+    </tbody>
+</table>
+
+<script>
+    document.getElementById('btnagregar').addEventListener('click', function () {
+        let numboleta = document.getElementById('numboleta').value;
+        let nummesa = document.getElementById('nummesa').options.selectedIndex + 1;
+        let product = document.getElementById('product').options.selectedIndex;
+        let cant = document.getElementById('cant').value;
+
+        fetch("@Url.Content("~/Carrito/ResumenPedido?idmesa=")" + nummesa)
+            .then(function (res) {
+                return res.json();
+            })
+            .then(function (mijson) {
+                console.log(mijson);
+
+            })
+
+
+
+
+
+    })
+
+</script>
