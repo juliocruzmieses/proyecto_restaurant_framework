@@ -93,26 +93,45 @@ namespace Proyecto_Restaurant.Controllers
         }
         public ActionResult Valida_Pedido(int idmesa)
         {
+            
             using (SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["cadena"].ConnectionString))
             {
+                Session["boleta"] = null;
+                Session["mensaje"] = null;
+                CarritoModel boleta = new CarritoModel();
                 SqlCommand cmd = new SqlCommand("sp_valida_pedido_en_mesa", cn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@idmesa", idmesa);//definir donde colocar el id en la mesa para capturarlo
                 cn.Open();
-                int validando = Convert.ToInt32(cmd.ExecuteScalar().ToString());
-                if (validando !=0)
+                SqlDataReader dr = cmd.ExecuteReader();
+                int cant = 0;
+                while (dr.Read())
                 {
+                    boleta.id_boleta = dr.GetString(0);
+                    boleta.id_usuario = dr.GetInt32(1);
+                    boleta.id_mesa = dr.GetInt32(2);
+                    boleta.estado = dr.GetInt32(3);
+                    cant++;
+                }
+                if (cant != 0)
+                {
+                    Session["boleta"] = boleta;
                     return RedirectToAction("Resumen", "Carrito");
                 }
                 else
                 {
-                    return RedirectToAction("IndexCarrito", "Carrito");
+                    Session["idmesa"] = idmesa;
+                    return RedirectToAction("CrearBoleta", "Carrito");
                 }
             }
                 
         }
-        public ActionResult Resumen()
+        public async Task<ActionResult> Resumen()
         {
+            CarritoModel boleta=(CarritoModel)Session["boleta"];
+            ViewBag.numboleta = boleta.id_boleta;
+            ViewBag.mesas = new SelectList(await Task.Run(() => Mesas()), "idMesa", "descMesa");
+            ViewBag.productos = new SelectList(await Task.Run(() => Productos()), "id_producto", "nom_producto");
             return View();
         }
         public JsonResult ResumenPedido(int idmesa)
@@ -120,9 +139,55 @@ namespace Proyecto_Restaurant.Controllers
             List<DetalleCarritoModel>carrito = (List < DetalleCarritoModel >)List_Detalle(idmesa);
             return Json(carrito,JsonRequestBehavior.AllowGet);
         }
-        public ActionResult AgregarCarrito()
+        public ActionResult CrearBoleta()
         {
-            return View();
+            UsuarioModel user = (UsuarioModel)Session["usuario"];
+            int idmesa = (int)Session["idmesa"];
+
+            using (SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["cadena"].ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand("sp_create_boleta", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@idusuario", user.id_usuario);
+                cmd.Parameters.AddWithValue("@idmesa", idmesa);
+                cn.Open();
+                cmd.ExecuteNonQuery();
+            }
+
+            using (SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["cadena"].ConnectionString))
+            {
+                CarritoModel boleta = new CarritoModel();
+                SqlCommand cmd = new SqlCommand("sp_devuelve_ultima_boleta", cn);
+                cn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    boleta.id_boleta = dr.GetString(0);
+                    boleta.id_usuario = dr.GetInt32(1);
+                    boleta.id_mesa = dr.GetInt32(2);
+                    boleta.monto_total = dr.GetDecimal(3);
+                    boleta.fecha_compra = dr.GetDateTime(4);
+                    boleta.estado = dr.GetInt32(5);
+                }
+                Session["boleta"] = boleta;
+            }
+            return RedirectToAction("Resumen","Carrito");
+        }
+        public ActionResult AgregarCarrito(DetalleCarritoModel detallecarrito)
+        {
+            using (SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["cadena"].ConnectionString))
+            {
+                CarritoModel boleta = (CarritoModel)Session["boleta"];
+
+                SqlCommand cmd = new SqlCommand("sp_add_product_on_detailboleta", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@idboleta", boleta.id_boleta);
+                cmd.Parameters.AddWithValue("idproducto", detallecarrito.id_producto);
+                cmd.Parameters.AddWithValue("cant", detallecarrito.cantidad);
+                cn.Open();
+                cmd.ExecuteNonQuery();
+            }
+            return RedirectToAction("Resumen", "Carrito");
         }
         public ActionResult FinalizarCompra()
         {

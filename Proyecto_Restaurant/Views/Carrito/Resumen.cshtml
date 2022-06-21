@@ -3,27 +3,24 @@
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
+@if (Session["mensaje"] != null)
+{
+    <p>@HttpContext.Current.Session["mensaje"].ToString()</p>
+}
 <form action="#" method="post" class="mt-4">
     <div class="form-row">
         <div class="form-group col-md-3">
             <label for="numboleta">N° de Boleta</label>
-            <input type="email" class="form-control" id="numboleta" placeholder="Email" value="BV000-000001" readonly>
+            <input type="email" class="form-control" id="numboleta" placeholder="N° de boleta" 
+                    value="@ViewBag.numboleta" readonly>
         </div>
         <div class="form-group col-md-3">
             <label for="nummesa">N° de Mesa</label>
-            <select class="form-control" id="nummesa" disabled>
-                <option>Mesa 1</option>
-                <option>Mesa 2</option>
-                <option>Mesa 3</option>
-            </select>
+            @Html.DropDownList("nummesa", (SelectList)ViewBag.mesas, new { @class = "form-control" ,@disabled="disabled"})
         </div>
         <div class="form-group col-md-3">
             <label for="product">Producto</label>
-            <select id="product" class="form-control">
-                <option>arroz con pollo</option>
-                <option>ensalada rusa</option>
-                <option>gaseosa 5m</option>
-            </select>
+            @Html.DropDownList("product", (SelectList)ViewBag.productos,"[SELECCIONE..]", new { @class = "form-control" })
         </div>
         <div class="form-group col-md-3">
             <label for="cant">Cantidad</label>
