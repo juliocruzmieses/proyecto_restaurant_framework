@@ -32,8 +32,9 @@ namespace Proyecto_Restaurant.Controllers
                     {
                         id_boleta = dr.GetString(0),
                         id_producto = dr.GetInt32(1),
-                        cantidad = dr.GetInt32(2),
-                        total= dr.GetDecimal(3)
+                        nomproducto = dr.GetString(2),
+                        cantidad = dr.GetInt32(3),
+                        total= dr.GetDecimal(4)
                     });
                 }
             }
@@ -193,9 +194,20 @@ namespace Proyecto_Restaurant.Controllers
         {
             return View();
         }
-        public ActionResult Delete()
+        public ActionResult Delete(int id)
         {
-            return View();
+            using (SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["cadena"].ConnectionString))
+            {
+                CarritoModel boleta = (CarritoModel)Session["boleta"];
+
+                SqlCommand cmd = new SqlCommand("sp_delete_product_on_detailboleta", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@idboleta", boleta.id_boleta);
+                cmd.Parameters.AddWithValue("@idproducto", id);
+                cn.Open();
+                cmd.ExecuteNonQuery();
+            }
+            return RedirectToAction("Resumen", "Carrito");
         }
     }
 }

@@ -7,28 +7,29 @@
 {
     <p>@HttpContext.Current.Session["mensaje"].ToString()</p>
 }
-<form action="#" method="post" class="mt-4">
+<form action="@Url.Action("AgregarCarrito","Carrito")" method="post" class="mt-4">
     <div class="form-row">
         <div class="form-group col-md-3">
             <label for="numboleta">N° de Boleta</label>
-            <input type="email" class="form-control" id="numboleta" placeholder="N° de boleta" 
-                    value="@ViewBag.numboleta" readonly>
+            <input type="email" class="form-control" id="numboleta" placeholder="N° de boleta"
+                   value="@ViewBag.numboleta" readonly>
         </div>
         <div class="form-group col-md-3">
             <label for="nummesa">N° de Mesa</label>
-            @Html.DropDownList("nummesa", (SelectList)ViewBag.mesas, new { @class = "form-control" ,@disabled="disabled"})
+            @Html.DropDownList("nummesa", (SelectList)ViewBag.mesas, new { @class = "form-control", @disabled = "disabled" })
         </div>
         <div class="form-group col-md-3">
-            <label for="product">Producto</label>
-            @Html.DropDownList("product", (SelectList)ViewBag.productos,"[SELECCIONE..]", new { @class = "form-control" })
+            <label for="id_producto">Producto</label>
+            @Html.DropDownList("id_producto", (SelectList)ViewBag.productos, "[SELECCIONE..]", new { @class = "form-control" })
         </div>
         <div class="form-group col-md-3">
-            <label for="cant">Cantidad</label>
-            <input type="text" class="form-control" id="cant">
+            <label for="cantidad">Cantidad</label>
+            <input type="text" class="form-control" id="cantidad" name="cantidad">
         </div>
     </div>
-    <button type="button" class="btn btn-primary" id="btnagregar">Agregar producto</button>
-    <a href="#" class="btn btn-primary">Retornar</a>
+    <button type="submit" class="btn btn-primary">Agregar producto</button>
+    @*<a href="#" class="btn btn-primary">Retornar</a>*@
+    @Html.ActionLink("Retornar", "IndexCarrito", null, new { @class = "btn btn-primary" })
 </form>
 
 
@@ -36,7 +37,7 @@
 
 
 <h2 class="text-center">Resumen de Pedido</h2>
-<table class="table mt-4" id="ResumenPedido">
+<table class="table mt-4">
     <thead>
         <tr>
             <th>Producto</th>
@@ -45,48 +46,35 @@
             <th></th>
         </tr>
     </thead>
-    <tbody>
-        <tr>
-            <td>pollo</td>
-            <td>2</td>
-            <td>20</td>
-            <td><a href="#" class="btn btn-primary">edit</a></td>
-        </tr>
-        <tr>
-            <td>gaseosa</td>
-            <td>3</td>
-            <td>33</td>
-            <td><a href="#" class="btn btn-primary">edit</a></td>
-        </tr>
-        <tr>
-            <td>chaufa</td>
-            <td>2</td>
-            <td>45</td>
-            <td><a href="#" class="btn btn-primary">edit</a></td>
-        </tr>
+    <tbody id="ResumenPedido">
     </tbody>
 </table>
 
 <script>
-    document.getElementById('btnagregar').addEventListener('click', function () {
-        let numboleta = document.getElementById('numboleta').value;
+    window.onload = function () {
+        let totalmonto = 0;
+        let formatter = new Intl.NumberFormat('es-PE', {
+            style: 'currency',
+            currency: 'PEN',
+            minimumFractionDigits: 2
+        })
         let nummesa = document.getElementById('nummesa').options.selectedIndex + 1;
-        let product = document.getElementById('product').options.selectedIndex;
-        let cant = document.getElementById('cant').value;
-
         fetch("@Url.Content("~/Carrito/ResumenPedido?idmesa=")" + nummesa)
             .then(function (res) {
                 return res.json();
             })
             .then(function (mijson) {
                 console.log(mijson);
-
+                let miresultado = "";
+                for (let i = 0; i < mijson.length; i++) {
+                    totalmonto += mijson[i].total;
+                    miresultado += "<tr><td>" + mijson[i].nomproducto + "</td><td>" + mijson[i].cantidad + "</td><td>" +
+                        formatter.format(mijson[i].total) + "</td ><td>" +
+                        "<a href='@Url.Action("Delete","Carrito")?id=" + mijson[i].id_producto +"' class='btn btn-primary'>content</a>" +
+                        "</td></tr>"
+                }
+                document.getElementById("ResumenPedido").innerHTML = miresultado + "<tr></tr><tr><th colspan='2'>Total</th><th>" + formatter.format(totalmonto) + "</th></tr>";
             })
-
-
-
-
-
-    })
+    }
 
 </script>
