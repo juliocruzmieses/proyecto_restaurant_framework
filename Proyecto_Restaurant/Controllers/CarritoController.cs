@@ -217,10 +217,14 @@ namespace Proyecto_Restaurant.Controllers
             }
             return RedirectToAction("Resumen", "Carrito");
         }
-        public ActionResult FinalizarCompra()
+        public async Task<ActionResult> ListaPedidos()
         {
-
-            return View();
+            return View(await Task.Run(() => ListCarrito(1)));
+        }
+        [HttpPost]
+        public async Task<ActionResult> ListaPedidos(int estado)
+        {
+            return View(await Task.Run(() => ListCarrito(estado)));
         }
         public ActionResult Delete(int id)
         {

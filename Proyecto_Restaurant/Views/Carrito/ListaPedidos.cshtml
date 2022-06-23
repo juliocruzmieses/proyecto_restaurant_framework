@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Proyecto_Restaurant.Models.CarritoModel>
+
+@{
+    ViewBag.Title = "Lista de Pedidos";
+}
+
+<h2>Lista de Pedidos</h2>
+
+
+
+@using (Html.BeginForm("ListaPedidos","Carrito",FormMethod.Post))
+{
+    <div class="form-group">
+        <label for="idestado">Estado</label>
+        <select class="form-control" id="idestado">
+            <option value="1">Pendiente</option>
+            <option value="2">Cancelado</option>
+            <option value="3">Anulado</option>
+        </select>
+    </div>    
+    <input type="submit" class="btn btn-primary" value="Consulta" />
+}
+
+
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.id_boleta)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.nom_usuario)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.descr_mesa)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.monto_total)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fecha_compra)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.id_boleta)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.nom_usuario)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.descr_mesa)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.monto_total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.fecha_compra)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+    }
+
+</table>
