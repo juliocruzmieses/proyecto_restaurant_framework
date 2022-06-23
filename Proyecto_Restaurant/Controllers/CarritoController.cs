@@ -86,6 +86,30 @@ namespace Proyecto_Restaurant.Controllers
             }
             return lista;
         }
+        IEnumerable<CarritoModel>ListCarrito(int id)
+        {
+            List<CarritoModel> lista = new List<CarritoModel>();
+            using (SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["cadena"].ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand("sp_listar_boleta", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@estado", id);
+                cn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    lista.Add(new CarritoModel()
+                    {
+                        id_boleta = dr.GetString(0),
+                        nom_usuario = dr.GetString(1),
+                        descr_mesa = dr.GetString(2),
+                        monto_total = dr.GetDecimal(3),
+                        fecha_compra = dr.GetDateTime(4)
+                    });
+                }
+            }
+            return lista;
+        }
 
 
         public async Task<ActionResult> IndexCarrito()
@@ -116,6 +140,7 @@ namespace Proyecto_Restaurant.Controllers
                 }
                 if (cant != 0)
                 {
+                    Session["idmesa"] = idmesa;
                     Session["boleta"] = boleta;
                     return RedirectToAction("Resumen", "Carrito");
                 }
@@ -130,9 +155,11 @@ namespace Proyecto_Restaurant.Controllers
         public async Task<ActionResult> Resumen()
         {
             CarritoModel boleta=(CarritoModel)Session["boleta"];
+            int mesa = (int)Session["idmesa"];
             ViewBag.numboleta = boleta.id_boleta;
-            ViewBag.mesas = new SelectList(await Task.Run(() => Mesas()), "idMesa", "descMesa");
+            ViewBag.mesas = new SelectList(await Task.Run(() => Mesas()), "idMesa", "descMesa", mesa);
             ViewBag.productos = new SelectList(await Task.Run(() => Productos()), "id_producto", "nom_producto");
+
             return View();
         }
         public JsonResult ResumenPedido(int idmesa)
@@ -192,6 +219,7 @@ namespace Proyecto_Restaurant.Controllers
         }
         public ActionResult FinalizarCompra()
         {
+
             return View();
         }
         public ActionResult Delete(int id)
