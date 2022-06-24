@@ -32,8 +32,9 @@
                             <li>@Html.ActionLink("Mesas", "ListadoMesas", "Mesa")</li>
                         </ul>
                     </li>
-                    <li>@Html.ActionLink("Pedido", "IndexCarrito","Carrito")</li>
-                    <li><a href="#">Configuraci&oacute;n</a></li>
+                    <li>@Html.ActionLink("Pedido", "IndexCarrito", "Carrito")</li>
+                    <li>@Html.ActionLink("Listado de Boleta", "ListaPedidos", "Carrito")</li>
+                    @*<li><a href="#">Configuraci&oacute;n</a></li>*@
                     <li>@Html.ActionLink("Acerca de", "About", "Home")</li>
                     <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>
                 </ul>
@@ -66,13 +67,6 @@
             @RenderBody()
         </div>
     </div>
-    <script>
-        $(document).ready(function () {
-            $("a").click(function () {
-                $(this).toggleClass("active");
-            });
-        });
-    </script>
     <script src="~/Content/js/bootstrap.min.js"></script>
     <script src="~/Content/js/jquery.min.js"></script>
     <script src="~/Content/js/main.js"></script>
