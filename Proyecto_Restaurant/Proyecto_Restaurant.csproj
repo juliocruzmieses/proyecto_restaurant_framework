@@ -250,6 +250,8 @@
     <Content Include="Views\Carrito\IndexCarrito.cshtml" />
     <Content Include="Views\Carrito\Resumen.cshtml" />
     <Content Include="Views\Carrito\ListaPedidos.cshtml" />
+    <Content Include="Views\Carrito\FinalizarPedido.cshtml" />
+    <Content Include="Views\Carrito\FinalizarCompra.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

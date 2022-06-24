@@ -8,15 +8,18 @@
 
 
 
-@using (Html.BeginForm("ListaPedidos","Carrito",FormMethod.Post))
+@using (Html.BeginForm("ListadoPedidos", "Carrito",FormMethod.Post))
 {
     <div class="form-group">
-        <label for="idestado">Estado</label>
-        <select class="form-control" id="idestado">
-            <option value="1">Pendiente</option>
-            <option value="2">Cancelado</option>
-            <option value="3">Anulado</option>
-        </select>
+        <label for="estado">Estado</label>
+        @Html.DropDownList("estado", new SelectList(new List<SelectListItem> {
+            new SelectListItem{Selected=true,Text="[Seleccionar...]",Value="-1"},
+            new SelectListItem{Selected=false,Text="En Curso",Value="1"},
+            new SelectListItem{Selected=false,Text="Pendiente de cobro",Value="2"},
+            new SelectListItem{Selected=false,Text="Cancelado",Value="3"},
+            new SelectListItem{Selected=false,Text="Anulado",Value="4"}
+
+        }, "Value", "Text"),new { @class="form-control"})
     </div>    
     <input type="submit" class="btn btn-primary" value="Consulta" />
 }
@@ -63,7 +66,7 @@
                 @Html.DisplayFor(modelItem => item.fecha_compra)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("FIN", "BuscarBoleta", new { codboleta=item.id_boleta})
             </td>
         </tr>
     }
