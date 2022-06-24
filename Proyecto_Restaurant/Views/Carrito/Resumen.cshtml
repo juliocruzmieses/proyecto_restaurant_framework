@@ -1,0 +1,87 @@
+﻿@{
+    ViewBag.Title = "Pedido";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+@if (Session["mensaje"] != null)
+{
+    <p>@HttpContext.Current.Session["mensaje"].ToString()</p>
+}
+<form action="@Url.Action("AgregarCarrito","Carrito")" method="post" class="mt-4">
+    <div class="form-row">
+        <div class="form-group col-md-3">
+            <label for="numboleta">N° de Boleta</label>
+            <input type="email" class="form-control" id="numboleta" placeholder="N° de boleta"
+                   value="@ViewBag.numboleta" readonly>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="nummesa">N° de Mesa</label>
+            @Html.DropDownList("nummesa", (SelectList)ViewBag.mesas, new { @class = "form-control", @disabled = "disabled" })
+        </div>
+        <div class="form-group col-md-3">
+            <label for="id_producto">Producto</label>
+            @Html.DropDownList("id_producto", (SelectList)ViewBag.productos, "[SELECCIONE..]", new { @class = "form-control" })
+        </div>
+        <div class="form-group col-md-3">
+            <label for="cantidad">Cantidad</label>
+            <input type="text" class="form-control" id="cantidad" name="cantidad">
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Agregar producto</button>
+    @*<a href="#" class="btn btn-primary">Retornar</a>*@
+    @Html.ActionLink("Retornar", "IndexCarrito", null, new { @class = "btn btn-primary" })
+</form>
+
+
+
+
+
+<h2 class="text-center">Resumen de Pedido</h2>
+<table class="table mt-4">
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Total</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="ResumenPedido">
+    </tbody>
+</table>
+
+<button type="button" id="finalizarpedido" class="btn btn-primary">Finalizar pedido</button>
+<script>
+    window.onload = function () {
+        let totalmonto = 0;
+        let formatter = new Intl.NumberFormat('es-PE', {
+            style: 'currency',
+            currency: 'PEN',
+            minimumFractionDigits: 2
+        })
+        let nummesa = document.getElementById('nummesa').options.selectedIndex + 1;
+        fetch("@Url.Content("~/Carrito/ResumenPedido?idmesa=")" + nummesa)
+            .then(function (res) {
+                return res.json();
+            })
+            .then(function (mijson) {
+                console.log(mijson);
+                let miresultado = "";
+                for (let i = 0; i < mijson.length; i++) {
+                    totalmonto += mijson[i].total;
+                    miresultado += "<tr><td>" + mijson[i].nomproducto + "</td><td>" + mijson[i].cantidad + "</td><td>" +
+                        formatter.format(mijson[i].total) + "</td ><td>" +
+                        "<a href='@Url.Action("Delete","Carrito")?id=" + mijson[i].id_producto +"' class='btn btn-primary'>Borrar</a>" +
+                        "</td></tr>"
+                }
+                document.getElementById("ResumenPedido").innerHTML = miresultado + "<tr></tr><tr><th colspan='2'>Total</th><th>" + formatter.format(totalmonto) + "</th></tr>" +
+                    "<tr></tr><tr><th class='invisible' id='montototall'>" + totalmonto + "</th></tr>";
+            })
+    }
+</script>
+<script>
+    document.getElementById("finalizarpedido").addEventListener("click", function () {
+        let montototal = document.getElementById("montototall").textContent;
+        location.href = "@Url.Action("FinalizarPedido", "Carrito")?Nestate=2&montototal="+montototal;
+    })
+</script>

@@ -1,0 +1,78 @@
+﻿
+@{
+    ViewBag.Title = "FinalizarCompra";
+}
+
+<h2>FinalizarCompra</h2>
+
+@Html.ActionLink("Retroceder", "ListaPedidos",null,new { @class="btn btn-primary"})
+<h2 class="text-center">Pedido N° @ViewBag.idboleta</h2>
+<div class="row mb-4">
+    <div class="col-4">
+        <label for="idmesa">mesa n°</label>
+        <label class="invisible" id="codmesa">@ViewBag.idmesa</label>
+        <input type="text" id="idmesa" class="form-control" value="@ViewBag.mesa" disabled>
+    </div>
+    <div class="col-4">
+        <label for="idmozo">mozo</label>
+        <input type="text" id="idmozo" class="form-control" value="@ViewBag.mozo" disabled>
+    </div>
+    <div class="col-4">
+        <label for="idfecha">fecha pedido</label>
+        <input type="text" id="idfecha" class="form-control" value="@ViewBag.fechapedido" disabled>
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>producto</th>
+                    <th>cantidad</th>
+                    <th>precio</th>
+                </tr>
+            </thead>
+            <tbody id="ResumenPedido">
+            </tbody>
+        </table>
+    </div>
+    <div class="col-6">
+        <label for="idmonttotal">monto a cancelar</label>
+        <input type="text" value="@ViewBag.montototal" class="form-control" id="idmonttotal" disabled>
+        <button type="button" id="finalizarcompra" class="btn btn-primary">Finalizar compra</button>
+    </div>
+</div>
+
+
+<script>
+    window.onload = function () {
+        let totalmonto = 0;
+        let formatter = new Intl.NumberFormat('es-PE', {
+            style: 'currency',
+            currency: 'PEN',
+            minimumFractionDigits: 2
+        })
+        let nummesa = document.getElementById('codmesa').textContent;
+        fetch("@Url.Content("~/Carrito/ResumenPedido?idmesa=")" + nummesa)
+            .then(function (res) {
+                return res.json();
+            })
+            .then(function (mijson) {
+                console.log(mijson);
+                let miresultado = "";
+                for (let i = 0; i < mijson.length; i++) {
+                    totalmonto += mijson[i].total;
+                    miresultado += "<tr><td>" + mijson[i].nomproducto + "</td><td>" + mijson[i].cantidad + "</td><td>" +
+                        formatter.format(mijson[i].total) + "</td ></tr>"
+                }
+                document.getElementById("ResumenPedido").innerHTML = miresultado + "<tr></tr><tr><th colspan='2'>Total</th><th>" + formatter.format(totalmonto) + "</th></tr>" +
+                    "<tr></tr><tr><th class='invisible'>" + totalmonto + "</th></tr>";
+            })
+    }
+</script>
+<script>
+    document.getElementById("finalizarcompra").addEventListener("click", function () {
+        let montototal = document.getElementById("idmonttotal").value;
+        location.href = "@Url.Action("FinalizarPedido", "Carrito")?Nestate=3&montototal="+montototal;
+    })
+</script>

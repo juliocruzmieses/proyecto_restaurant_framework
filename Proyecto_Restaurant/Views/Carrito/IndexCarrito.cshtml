@@ -1,21 +1,21 @@
 ﻿@model IEnumerable<Proyecto_Restaurant.Models.MesaModel>
-    @{
-        ViewBag.Title = "Seleccionar Mesa";
-    }
-    <h2 class="text-center">@ViewBag.Title</h2>
+@{
+    ViewBag.Title = "Seleccionar Mesa";
+}
+<h2 class="text-center">@ViewBag.Title</h2>
 
-    <a href="#" class="btn btn-primary">Nuevo Pedido</a>
+@*<a href="#" class="btn btn-primary">Nuevo Pedido</a>*@
 
-    <div class="d-flex flex-wrap">
-        @foreach (var item in Model)
-        {
-        <a href="#">
+<div class="d-flex flex-wrap">
+    @foreach (var item in Model)
+    {
+        <a href="@Url.Action("Valida_Pedido","Carrito")?idmesa=@item.idMesa">
             <div class="card text-white bg-primary m-3" style="max-width: 18rem;">
                 <div class="card-body">
                     <h4 class="card-text text-white">@item.descMesa</h4>
                 </div>
             </div>
         </a>
-        }
-    </div>
+    }
+</div>
 
