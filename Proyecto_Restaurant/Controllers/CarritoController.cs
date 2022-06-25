@@ -123,7 +123,6 @@ namespace Proyecto_Restaurant.Controllers
             using (SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["cadena"].ConnectionString))
             {
                 Session["boleta"] = null;
-                Session["mensaje"] = null;
                 Session["idmesa"] = null;
                 CarritoModel boleta = new CarritoModel();
                 SqlCommand cmd = new SqlCommand("sp_valida_pedido_en_mesa", cn);
