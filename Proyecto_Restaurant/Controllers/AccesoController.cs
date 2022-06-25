@@ -50,7 +50,7 @@ namespace Proyecto_Restaurant.Controllers
             }
             if (user.id_usuario!=0)
             {
-                //FormsAuthentication.SetAuthCookie(user.username, false);
+                FormsAuthentication.SetAuthCookie(user.username, false);
 
                 Session["usuario"] = user;
                 Session["nomuser"] = user.nom_usuario;
@@ -65,7 +65,7 @@ namespace Proyecto_Restaurant.Controllers
 
         public ActionResult CerrarSesion()
         {
-            //FormsAuthentication.SignOut();
+            FormsAuthentication.SignOut();
 
             Session["usuario"] = null;
             return RedirectToAction("Login","Acceso");

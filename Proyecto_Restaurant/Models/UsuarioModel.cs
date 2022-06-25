@@ -23,10 +23,8 @@ namespace Proyecto_Restaurant.Models
 
         public string ape_usuario { get; set; }
         [Display(Name = "Username")]
-        [Required]
         public string username { get; set; }
        
-        [Required]
         public string pass { get; set; }
 
         [Display(Name = "E-mail")]
@@ -38,7 +36,7 @@ namespace Proyecto_Restaurant.Models
 
         [Display(Name = "Telefono")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "El telefono es requerido.")]
-       [RegularExpression("([0-9]+$)",ErrorMessage ="Solo se perimte números")]
+        [RegularExpression("([0-9]+$)",ErrorMessage ="Solo se perimte números")]
         public string fono_user { get; set; }
 
         [Display(Name = "Rol")]
