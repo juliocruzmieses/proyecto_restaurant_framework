@@ -10,6 +10,7 @@ using System.Data.SqlClient;
 using System.Configuration;
 using System.Text;
 using System.Security.Cryptography;
+using System.Web.Security;
 
 namespace Proyecto_Restaurant.Controllers
 {
@@ -42,12 +43,15 @@ namespace Proyecto_Restaurant.Controllers
                     user.username = dr.GetString(3);
                     user.email = dr.GetString(4);
                     user.fono_user = dr.GetString(5);
-                    user.id_distrito = dr.GetInt32(6);
-                    user.nom_distrito = dr.GetString(7);
+                    user.id_rolPermiso = (RolPermiso)dr.GetInt32(6);
+                    user.id_distrito = dr.GetInt32(7);
+                    user.nom_distrito = dr.GetString(8);
                 }
             }
             if (user.id_usuario!=0)
             {
+                //FormsAuthentication.SetAuthCookie(user.username, false);
+
                 Session["usuario"] = user;
                 Session["nomuser"] = user.nom_usuario;
                 return RedirectToAction("Index","Home") ;
@@ -61,6 +65,8 @@ namespace Proyecto_Restaurant.Controllers
 
         public ActionResult CerrarSesion()
         {
+            //FormsAuthentication.SignOut();
+
             Session["usuario"] = null;
             return RedirectToAction("Login","Acceso");
         }

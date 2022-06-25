@@ -46,6 +46,9 @@ namespace Proyecto_Restaurant.Models
 
         [Display(Name = "Rol")]
         public string nom_rol { get; set; }
+
+        public RolPermiso id_rolPermiso { get; set; }
+
         [Display(Name = "Distrito")]
 
         public int id_distrito { get; set; }

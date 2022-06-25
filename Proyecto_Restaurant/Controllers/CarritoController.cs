@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Proyecto_Restaurant.Controllers
 {
-    [ValidarSession]
+    [Authorize]
     public class CarritoController : Controller
     {
         IEnumerable<DetalleCarritoModel> List_Detalle(int idmesa,string numboleta)
@@ -112,7 +112,7 @@ namespace Proyecto_Restaurant.Controllers
             return lista;
         }
 
-
+        [ValidarSession(RolPermiso.Mozo)]
         public async Task<ActionResult> IndexCarrito()
         {
             return View(await Task.Run(() => Mesas()));
@@ -244,6 +244,8 @@ namespace Proyecto_Restaurant.Controllers
             }
             return RedirectToAction("Resumen");
         }
+
+        [ValidarSession(RolPermiso.Cajero)]
         public async Task<ActionResult> ListaPedidos()
         {
             int estado;

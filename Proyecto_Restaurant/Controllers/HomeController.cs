@@ -8,7 +8,7 @@ using Proyecto_Restaurant.Permisos;
 
 namespace Proyecto_Restaurant.Controllers
 {
-    [ValidarSession]
+    [Authorize]
     public class HomeController : Controller
     {
         public ActionResult Index()
@@ -20,6 +20,10 @@ namespace Proyecto_Restaurant.Controllers
             return View();
         }
         public ActionResult Contact()
+        {
+            return View();
+        }
+        public ActionResult SinPermiso()
         {
             return View();
         }

@@ -61,7 +61,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Web" />
+    <Reference Include="System.Web">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Web.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
@@ -144,6 +146,7 @@
     <Compile Include="Models\MesaModel.cs" />
     <Compile Include="Models\ProductoModel.cs" />
     <Compile Include="Models\RolModel.cs" />
+    <Compile Include="Models\RolPermiso.cs" />
     <Compile Include="Models\UsuarioModel.cs" />
     <Compile Include="Permisos\ValidarSessionAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -230,7 +233,6 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Acceso\Login.cshtml" />
     <Content Include="Views\Usuario\ListadoUsuarios.cshtml" />
-    <Content Include="Views\Usuario\Create.cshtml" />
     <Content Include="Views\Usuario\Edit.cshtml" />
     <Content Include="Views\Rol\ListadoRoles.cshtml" />
     <Content Include="Views\Rol\Create.cshtml" />
@@ -252,6 +254,8 @@
     <Content Include="Views\Carrito\ListaPedidos.cshtml" />
     <Content Include="Views\Carrito\FinalizarPedido.cshtml" />
     <Content Include="Views\Carrito\FinalizarCompra.cshtml" />
+    <Content Include="Views\Home\SinPermiso.cshtml" />
+    <Content Include="Views\Usuario\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

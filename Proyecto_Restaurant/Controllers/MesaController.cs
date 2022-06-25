@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Proyecto_Restaurant.Controllers
 {
-    [ValidarSession]
+    [ValidarSession(RolPermiso.Administrador)]
     public class MesaController : Controller
     {
         // GET: Mesa

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Proyecto_Restaurant.Controllers
 {
-    [ValidarSession]
+    [ValidarSession(RolPermiso.Administrador)]
     public class CategoriaController : Controller
     {
         // GET: Categoria
