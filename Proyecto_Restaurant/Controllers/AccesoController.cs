@@ -38,7 +38,6 @@ namespace Proyecto_Restaurant.Controllers
 
                         cn.Open();
                         SqlDataReader dr = cmd.ExecuteReader();
-                        bool fil = dr.HasRows;
                         while (dr.Read())
                         {
                             user.id_usuario = dr.GetInt32(0);
