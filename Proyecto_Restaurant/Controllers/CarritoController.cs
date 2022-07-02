@@ -16,6 +16,7 @@ namespace Proyecto_Restaurant.Controllers
     [Authorize]
     public class CarritoController : Controller
     {
+        public static int estado1;
         IEnumerable<DetalleCarritoModel> List_Detalle(int idmesa,string numboleta)
         {
             List<DetalleCarritoModel> lista = new List<DetalleCarritoModel>();
@@ -247,21 +248,19 @@ namespace Proyecto_Restaurant.Controllers
         [ValidarSession(RolPermiso.Cajero)]
         public async Task<ActionResult> ListaPedidos()
         {
-            int estado;
-            if (TempData["estado"]== null)
+            int estado = 2;
+            if (estado1 != 2)
             {
-                estado = 2;
+                estado = estado1;
             }
-            else
-            {
-                estado = (int)TempData["estado"];
-            }
+            ViewBag.estado = estado;
             return View(await Task.Run(() => ListCarrito(estado)));
         }
         [HttpPost]
+        
         public ActionResult ListadoPedidos(int estado)
         {
-            TempData["estado"] = estado;
+            estado1 = estado;
             return RedirectToAction("ListaPedidos");
         }
         public ActionResult Delete(int id)

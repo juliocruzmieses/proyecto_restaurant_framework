@@ -16,7 +16,6 @@ namespace Proyecto_Restaurant.Controllers
 {
     public class AccesoController : Controller
     {
-        
         // GET: Acceso
         public ActionResult Login()
         {
@@ -61,6 +60,7 @@ namespace Proyecto_Restaurant.Controllers
 
                 Session["usuario"] = user;
                 Session["nomuser"] = user.nom_usuario;
+                Session["nomrol"] = user.id_rolPermiso;
                 return RedirectToAction("Index","Home") ;
             }
             else

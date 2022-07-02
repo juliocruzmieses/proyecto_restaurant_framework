@@ -3,52 +3,43 @@
 @{
     ViewBag.Title = "Actualizacion de datos";
 }
-
+@if (ViewBag.mensaje != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Exito</strong> @ViewBag.mensaje
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
 <h2 class="text-center"><u>Actualizacion de datos</u></h2>
-
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-<div class="form-horizontal">
-    <hr />
+
+<div class="form-row">
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @if (ViewBag.mensaje != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Exito</strong> @ViewBag.mensaje
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    }
-    <div class="form-group">
-        @Html.LabelFor(model => model.idRol, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.idRol, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-            @Html.ValidationMessageFor(model => model.idRol, "", new { @class = "text-danger" })
-        </div>
+    <div class="form-group col-md-6">
+        @Html.LabelFor(model => model.idRol, htmlAttributes: new { @class = "control-label" })
+        @Html.EditorFor(model => model.idRol, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.idRol, "", new { @class = "text-danger" })
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.nomRol, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.nomRol, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.nomRol, "", new { @class = "text-danger" })
-        </div>
+    <div class="w-100"></div>
+    <div class="form-group col-md-6">
+        @Html.LabelFor(model => model.nomRol, htmlAttributes: new { @class = "control-label" })
+        @Html.EditorFor(model => model.nomRol, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.nomRol, "", new { @class = "text-danger" })
     </div>
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Actualizar" class="btn btn-primary" />
-        </div>
+    <div class="w-100"></div>
+    <div class="form-group col-md-12">
+        <input type="submit" value="Actualizar" class="btn btn-primary" />
     </div>
 </div>
 }
 
 <div>
-    @Html.ActionLink("Regresar", "ListadoRoles",null,new { @class="btn btn-primary"})
+    @Html.ActionLink("Regresar", "ListadoRoles", null, new { @class = "btn btn-primary" })
 </div>
 
 @section Scripts {

@@ -11,8 +11,9 @@
     {
         <a href="@Url.Action("Valida_Pedido","Carrito")?idmesa=@item.idMesa">
             <div class="card text-white bg-primary m-3" style="max-width: 18rem;">
-                <div class="card-body">
-                    <h4 class="card-text text-white">@item.descMesa</h4>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-text text-white">@item.descMesa</h5>
+                    <i class="fa fa-cutlery text-center display-4" aria-hidden="true"></i>
                 </div>
             </div>
         </a>
