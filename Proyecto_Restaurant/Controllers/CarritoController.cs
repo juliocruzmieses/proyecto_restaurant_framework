@@ -185,7 +185,7 @@ namespace Proyecto_Restaurant.Controllers
             ViewBag.numboleta = boleta.id_boleta;
             ViewBag.mesas = new SelectList(await Task.Run(() => Mesas()), "idMesa", "descMesa", mesa);
             ViewBag.productos = new SelectList(await Task.Run(() => Productos()), "id_producto", "nom_producto");
-
+            ViewBag.alerta = TempData["mensaje"];
             return View();
         }
         public JsonResult ResumenPedido(int idmesa)
@@ -230,18 +230,27 @@ namespace Proyecto_Restaurant.Controllers
         }
         public ActionResult AgregarCarrito(DetalleCarritoModel detallecarrito)
         {
-            using (SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["cadena"].ConnectionString))
+            string mensaje = null;
+            if (detallecarrito.id_producto>0 && detallecarrito.cantidad>0)
             {
-                CarritoModel boleta = (CarritoModel)Session["boleta"];
+                using (SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["cadena"].ConnectionString))
+                {
+                    CarritoModel boleta = (CarritoModel)Session["boleta"];
 
-                SqlCommand cmd = new SqlCommand("sp_add_product_on_detailboleta", cn);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@idboleta", boleta.id_boleta);
-                cmd.Parameters.AddWithValue("idproducto", detallecarrito.id_producto);
-                cmd.Parameters.AddWithValue("cant", detallecarrito.cantidad);
-                cn.Open();
-                cmd.ExecuteNonQuery();
+                    SqlCommand cmd = new SqlCommand("sp_add_product_on_detailboleta", cn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@idboleta", boleta.id_boleta);
+                    cmd.Parameters.AddWithValue("idproducto", detallecarrito.id_producto);
+                    cmd.Parameters.AddWithValue("cant", detallecarrito.cantidad);
+                    cn.Open();
+                    cmd.ExecuteNonQuery();
+                }
             }
+            else
+            {
+                mensaje = "No ha seleccionado un producto o la cantidad";
+            }
+            TempData["mensaje"] = mensaje;
             return RedirectToAction("Resumen");
         }
 
