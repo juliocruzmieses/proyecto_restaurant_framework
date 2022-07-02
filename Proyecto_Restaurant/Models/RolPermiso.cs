@@ -9,8 +9,6 @@ namespace Proyecto_Restaurant.Models
     {
         Administrador = 1,
         Cajero = 2,
-        Mozo = 3,
-        EncargadoCocina = 4,
-        Vendedor = 5
+        Mozo = 3
     }
 }
