@@ -1,31 +1,35 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
-
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+<link rel="stylesheet" href="~/Content/css/estilos.css" />
+<!-- HOME -->
+<div class="container contenedor_principal">
+    <div class="row">
+        <div class="col-12">
+            <div class="jumbotron">
+                <h1 class="titulo">ORDER FAST</h1>
+                <p class="lead">Desde la aplicación web podras gestionar los pedidos del restaurante de forma rápida y segura solo debes seleccionar la mesa y el menu a preparar. Así se podra mejorar el proceso de la gestión de pedidos.</p>
+            </div>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+
+    <div class="row">
+        <div class="col-md-4">
+            <img src="~/Images/icono_menu.png" class="icono_caracteristica">
+            <h3 class="titulo_caracteristica">Gestión de Menú</h3>
+            <p>
+                Desdes la aplicación ORDERFAST podras gestionar los distintos menús del día, podras crear, actualizar de forma rápida.
+            </p>
+        </div>
+        <div class="col-md-4">
+            <img src="~/Images/icono_mesa.png" class="icono_caracteristica icono_caracteristica--mesa">
+            <h3 class="titulo_caracteristica">Gestión de Mesas</h3>
+            <p>Tendras la capacidad de gestionar las diferentes mesas del restaurante si en caso se agrega una nueva mesa, podras crearla sin inconvenientes.</p>
+        </div>
+        <div class="col-md-4">
+            <img src="~/Images/icono_roles.png" class="icono_caracteristica icono_caracteristica--roles">
+            <h3 class="titulo_caracteristica">Gestión de Roles</h3>
+            <p>La aplicación esta diseñada para diferentes roles según el rol mostrara la funcionalidad permitida, de esta forma se logra un trabajo más eficiente.</p>
+        </div>
     </div>
 </div>

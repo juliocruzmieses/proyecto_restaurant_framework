@@ -1,0 +1,46 @@
+/* ESTILOS */
+.contenedor_principal {
+    margin-top: 50px;
+}
+
+.jumbotron {
+    background-image: url(../../Images/banner.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    color: #fff;
+    padding: 5rem 2rem !important;
+}
+
+@media (min-width: 768px) {
+    .jumbotron {
+        padding: 6rem 2rem !important;
+    }
+}
+
+h1.titulo {
+    font-weight: bold;
+}
+
+h3.titulo_caracteristica::after {
+    content: "";
+    width: 100px;
+    height: 2px;
+    margin: 10px 0;
+    background: #B25503;
+    display: block;
+    border-radius: 20px;
+}
+
+.icono_caracteristica {
+    width: 70px;
+    margin-bottom: 20px;
+}
+
+.icono_caracteristica--mesa {
+    width: 95px;
+}
+
+.icono_caracteristica--roles {
+    width: 85px;
+}

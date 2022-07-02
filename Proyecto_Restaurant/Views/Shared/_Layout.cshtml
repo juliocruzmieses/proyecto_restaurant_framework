@@ -14,6 +14,8 @@
     <div class="wrapper d-flex align-items-stretch">
         <nav id="sidebar">
             <div class="p-4 pt-5">
+                @if (User.Identity.IsAuthenticated)
+            {
                 <ul class="list-unstyled components mb-5">
                     <li>
                         <h4 class="text-muted text-center">@HttpContext.Current.Session["nomuser"].ToString()</h4>
@@ -21,25 +23,36 @@
                     <li>
                         @Html.ActionLink("Dashboard", "Index", "Home")
                     </li>
-                    <li>
-                        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Mantenimiento</a>
-                        <ul class="collapse list-unstyled" id="homeSubmenu">
-                            <li>@Html.ActionLink("Usuarios", "ListadoUsuarios", "Usuario")</li>
-                            <li>@Html.ActionLink("Productos", "ListadoProductos", "Producto")</li>
-                            <li>@Html.ActionLink("Roles", "ListadoRoles", "Rol")</li>
-                            <li>@Html.ActionLink("Distritos", "ListadoDistritos", "Distrito")</li>
-                            <li>@Html.ActionLink("Categorias", "ListadoCategorias", "Categoria")</li>
-                            <li>@Html.ActionLink("Mesas", "ListadoMesas", "Mesa")</li>
-                        </ul>
-                    </li>
-                    <li>@Html.ActionLink("Pedido", "IndexCarrito", "Carrito")</li>
-                    <li>@Html.ActionLink("Listado de Boleta", "ListaPedidos", "Carrito")</li>
+                    @if (@HttpContext.Current.Session["nomrol"].ToString() == "Administrador")
+                    {
+                        <li>
+                            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Mantenimiento</a>
+                            <ul class="collapse list-unstyled" id="homeSubmenu">
+                                <li>@Html.ActionLink("Usuarios", "ListadoUsuarios", "Usuario")</li>
+                                <li>@Html.ActionLink("Productos", "ListadoProductos", "Producto")</li>
+                                <li>@Html.ActionLink("Roles", "ListadoRoles", "Rol")</li>
+                                <li>@Html.ActionLink("Distritos", "ListadoDistritos", "Distrito")</li>
+                                <li>@Html.ActionLink("Categorias", "ListadoCategorias", "Categoria")</li>
+                                <li>@Html.ActionLink("Mesas", "ListadoMesas", "Mesa")</li>
+                            </ul>
+                        </li>
+                    }
+                    @if (@HttpContext.Current.Session["nomrol"].ToString() == "Mozo")
+                    {
+                        <li>@Html.ActionLink("Pedido", "IndexCarrito", "Carrito")</li>
+                    }
+                    @if (@HttpContext.Current.Session["nomrol"].ToString() == "Cajero")
+                    {
+                        <li>@Html.ActionLink("Listado de Boleta", "ListaPedidos", "Carrito")</li>
+                    }
                     @*<li><a href="#">Configuraci&oacute;n</a></li>*@
                     <li>@Html.ActionLink("Acerca de", "About", "Home")</li>
                     <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>
                 </ul>
+            }
+                
                 <div class="footer">
-                    <p>Copyright &copy; @DateTime.Now.Year All rights reserved</p>
+                    <p>Copyright &copy; @DateTime.Now.Year All rights reserved ORDER FAST</p>
                 </div>
             </div>
         </nav>

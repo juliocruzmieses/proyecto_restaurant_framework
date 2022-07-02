@@ -16,7 +16,6 @@ namespace Proyecto_Restaurant.Controllers
 {
     public class AccesoController : Controller
     {
-        
         // GET: Acceso
         public ActionResult Login()
         {
@@ -25,42 +24,55 @@ namespace Proyecto_Restaurant.Controllers
         [HttpPost]
         public ActionResult Login(UsuarioModel user)
         {
-            user.pass = ConvertirSha256(user.pass);
-            using (SqlConnection cn=new SqlConnection(ConfigurationManager.ConnectionStrings["cadena"].ConnectionString))
+            if (user.username!=null && user.pass!=null)
             {
-                SqlCommand cmd = new SqlCommand("usp_ValidarUsuario", cn);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("username", user.username);
-                cmd.Parameters.AddWithValue("pass", user.pass);
-
-                cn.Open();
-                SqlDataReader dr = cmd.ExecuteReader();
-                while (dr.Read())
+                user.pass = ConvertirSha256(user.pass);
+                using (SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["cadena"].ConnectionString))
                 {
-                    user.id_usuario = dr.GetInt32(0);
-                    user.nom_usuario = dr.GetString(1);
-                    user.ape_usuario = dr.GetString(2);
-                    user.username = dr.GetString(3);
-                    user.email = dr.GetString(4);
-                    user.fono_user = dr.GetString(5);
-                    user.id_rolPermiso = (RolPermiso)dr.GetInt32(6);
-                    user.id_distrito = dr.GetInt32(7);
-                    user.nom_distrito = dr.GetString(8);
+                    try
+                    {
+                        SqlCommand cmd = new SqlCommand("usp_ValidarUsuario", cn);
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("username", user.username);
+                        cmd.Parameters.AddWithValue("pass", user.pass);
+
+                        cn.Open();
+                        SqlDataReader dr = cmd.ExecuteReader();
+                        while (dr.Read())
+                        {
+                            user.id_usuario = dr.GetInt32(0);
+                            user.nom_usuario = dr.GetString(1);
+                            user.ape_usuario = dr.GetString(2);
+                            user.username = dr.GetString(3);
+                            user.email = dr.GetString(4);
+                            user.fono_user = dr.GetString(5);
+                            user.id_rolPermiso = (RolPermiso)dr.GetInt32(6);
+                            user.id_distrito = dr.GetInt32(7);
+                            user.nom_distrito = dr.GetString(8);
+                        }
+                    }
+                    catch (SqlException ex)
+                    {
+                        ViewBag.error = ex.Message.ToString();
+                    }
+                }
+                if (user.id_usuario != 0)
+                {
+                    FormsAuthentication.SetAuthCookie(user.username, false);
+
+                    Session["usuario"] = user;
+                    Session["nomuser"] = user.nom_usuario;
+                    Session["nomrol"] = user.id_rolPermiso;
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ViewData["Mensaje"] = "usuario no encontrado";
+                    return View();
                 }
             }
-            if (user.id_usuario!=0)
-            {
-                FormsAuthentication.SetAuthCookie(user.username, false);
-
-                Session["usuario"] = user;
-                Session["nomuser"] = user.nom_usuario;
-                return RedirectToAction("Index","Home") ;
-            }
-            else
-            {
-                ViewData["Mensaje"] = "usuario no encontrado";
-                return View();
-            }
+            ViewData["Mensaje"] = "Favor de llenar todos los campos";
+            return View();
         }
 
         public ActionResult CerrarSesion()
